@@ -1,0 +1,30 @@
+version: '3.8'
+
+volumes:
+  mongovol:
+
+networks:
+  mongonet:
+    driver: bridge
+
+services:
+  mongo-express:
+    image: mongo-express:latest
+    depends_on:
+      - mongodb
+    ports:
+      - 8081:8081
+    networks:
+      - mongonet
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+  mongodb:
+    image: mongo:latest
+    ports:
+      -  27017:27017
+    networks:
+      - mongonet
+    volumes:
+      - mongovol:/data/db

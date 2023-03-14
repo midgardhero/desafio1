@@ -11,16 +11,19 @@ services:
   mongo-express:
     image: mongo-express:latest
     depends_on:
-      - mongodb
+      - mongo
     ports:
       - 8081:8081
     networks:
       - mongonet
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: password
-  mongodb:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongo://admin:password@mongo:27017/
+  mongo:
     image: mongo:latest
     ports:
       -  27017:27017
@@ -28,3 +31,6 @@ services:
       - mongonet
     volumes:
       - mongovol:/data/db
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: admin
